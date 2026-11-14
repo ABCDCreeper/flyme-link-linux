@@ -1,0 +1,59 @@
+# Maintainer: flyme-link-linux contributors <flyme-link@users.noreply.github.com>
+pkgname=flyme-link-linux
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Linux client for Meizu Flyme PC Link (Flyme 互联) clipboard sync"
+arch=('any')
+url="https://github.com/flyme-link-linux/flyme-link-linux"
+license=('MIT')
+depends=('nodejs' 'wl-clipboard' 'libnotify')
+makedepends=('npm')
+optdepends=(
+    'xclip: clipboard support on X11'
+    'python-gobject: GTK QR pairing window'
+    'gtk4: GTK QR pairing window'
+    'gnome-shell: in-compositor clipboard sync via the bundled Shell extension'
+    'gnome-shell-extension-appindicator: tray icon on GNOME if the extension is not used'
+)
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+# TODO: replace SKIP with the sha256 of the GitHub tag archive once v1.0.0 is published.
+sha256sums=('SKIP')
+
+build() {
+    cd "$pkgname-$pkgver"
+    npm ci --omit=dev --no-audit --no-fund
+    node scripts/build-bundle.js
+}
+
+package() {
+    cd "$pkgname-$pkgver"
+
+    install -d "$pkgdir/usr/bin" \
+        "$pkgdir/usr/lib/flyme-link/dist" \
+        "$pkgdir/usr/lib/flyme-link/gui" \
+        "$pkgdir/usr/lib/systemd/user" \
+        "$pkgdir/usr/share/applications" \
+        "$pkgdir/usr/share/icons/hicolor/scalable/apps" \
+        "$pkgdir/usr/share/gnome-shell/extensions/flyme-link@local" \
+        "$pkgdir/usr/share/doc/$pkgname"
+
+    install -m 0644 dist/flyme-link.cjs "$pkgdir/usr/lib/flyme-link/dist/"
+    install -m 0755 gui/flyme-qr-gui.py "$pkgdir/usr/lib/flyme-link/gui/"
+    install -m 0755 scripts/flyme-link-gui "$pkgdir/usr/bin/flyme-link-gui"
+    install -m 0644 systemd/flyme-link.service "$pkgdir/usr/lib/systemd/user/"
+    install -m 0644 desktop/flyme-link-qr.desktop "$pkgdir/usr/share/applications/"
+    install -m 0644 assets/flyme-link-symbolic.svg \
+        "$pkgdir/usr/share/icons/hicolor/scalable/apps/"
+    install -m 0644 gnome-extension/extension.js gnome-extension/metadata.json \
+        "$pkgdir/usr/share/gnome-shell/extensions/flyme-link@local/"
+    install -m 0644 README.md LICENSE "$pkgdir/usr/share/doc/$pkgname/"
+    if [ -f THIRD_PARTY_NOTICES.md ]; then
+        install -m 0644 THIRD_PARTY_NOTICES.md "$pkgdir/usr/share/doc/$pkgname/"
+    fi
+
+    cat > "$pkgdir/usr/bin/flyme-link" <<'EOF'
+#!/bin/sh
+exec node /usr/lib/flyme-link/dist/flyme-link.cjs "$@"
+EOF
+    chmod 0755 "$pkgdir/usr/bin/flyme-link"
+}

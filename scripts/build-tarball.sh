@@ -36,5 +36,7 @@ fi
 
 mkdir -p "$DIST"
 say "creating $NAME.tar.gz"
-tar czf "$DIST/$NAME.tar.gz" -C "$ROOT/build/portable" "$NAME"
+# Deterministic archive: stable hashes across CI runs.
+tar --sort=name --mtime='UTC 2026-01-01' --owner=0 --group=0 --numeric-owner \
+    -czf "$DIST/$NAME.tar.gz" -C "$ROOT/build/portable" "$NAME"
 ls -lh "$DIST/$NAME.tar.gz"

@@ -1,0 +1,20 @@
+pkgbase = flyme-link-linux
+	pkgdesc = Linux client for Meizu Flyme PC Link (Flyme 互联) clipboard sync
+	pkgver = 1.0.0
+	pkgrel = 1
+	url = https://github.com/flyme-link-linux/flyme-link-linux
+	arch = any
+	license = MIT
+	makedepends = npm
+	depends = nodejs
+	depends = wl-clipboard
+	depends = libnotify
+	optdepends = xclip: clipboard support on X11
+	optdepends = python-gobject: GTK QR pairing window
+	optdepends = gtk4: GTK QR pairing window
+	optdepends = gnome-shell: in-compositor clipboard sync via the bundled Shell extension
+	optdepends = gnome-shell-extension-appindicator: tray icon on GNOME if the extension is not used
+	source = flyme-link-linux-1.0.0.tar.gz::https://github.com/flyme-link-linux/flyme-link-linux/archive/refs/tags/v1.0.0.tar.gz
+	sha256sums = SKIP
+
+pkgname = flyme-link-linux
