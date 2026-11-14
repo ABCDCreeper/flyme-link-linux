@@ -36,18 +36,22 @@ say() { printf '\033[1m==>\033[0m %s\n' "$*"; }
 say "building daemon bundle"
 node scripts/build-bundle.js
 
+rm -rf "$APPDIR"
 mkdir -p "$TOOLS" "$APPDIR/usr/bin" "$APPDIR/usr/lib/flyme-link/dist" \
     "$APPDIR/usr/lib/flyme-link/gui" "$APPDIR/usr/share/applications" \
     "$APPDIR/usr/share/icons/hicolor/scalable/apps" \
     "$APPDIR/usr/share/gnome-shell/extensions/flyme-link@local" \
-    "$APPDIR/usr/share/doc/flyme-link-linux"
+    "$APPDIR/usr/share/doc/flyme-link-linux/docs"
 
-if [ ! -x "$TOOLS/node-$NODE_VERSION-$NODE_ARCH/bin/node" ]; then
+NODE_TARBALL="node-$NODE_VERSION-linux-$NODE_ARCH.tar.xz"
+NODE_DIR="$TOOLS/node-$NODE_VERSION-$NODE_ARCH/node-$NODE_VERSION-linux-$NODE_ARCH"
+if [ ! -f "$TOOLS/$NODE_TARBALL" ] || [ ! -f "$TOOLS/SHASUMS256-$NODE_VERSION.txt" ]; then
     say "downloading Node $NODE_VERSION ($NODE_ARCH)"
-    NODE_TARBALL="node-$NODE_VERSION-linux-$NODE_ARCH.tar.xz"
     curl -fsSL -o "$TOOLS/$NODE_TARBALL" "https://nodejs.org/dist/$NODE_VERSION/$NODE_TARBALL"
     curl -fsSL -o "$TOOLS/SHASUMS256-$NODE_VERSION.txt" \
         "https://nodejs.org/dist/$NODE_VERSION/SHASUMS256.txt"
+fi
+if [ ! -x "$NODE_DIR/bin/node" ] || [ ! -f "$NODE_DIR/LICENSE" ]; then
     expected=$(grep -E "  $NODE_TARBALL\$" "$TOOLS/SHASUMS256-$NODE_VERSION.txt" | awk '{print $1}')
     actual=$(sha256sum "$TOOLS/$NODE_TARBALL" | awk '{print $1}')
     if [ -z "$expected" ] || [ "$expected" != "$actual" ]; then
@@ -56,10 +60,12 @@ if [ ! -x "$TOOLS/node-$NODE_VERSION-$NODE_ARCH/bin/node" ]; then
     fi
     mkdir -p "$TOOLS/node-$NODE_VERSION-$NODE_ARCH"
     tar -xJf "$TOOLS/$NODE_TARBALL" -C "$TOOLS/node-$NODE_VERSION-$NODE_ARCH" \
-        "node-$NODE_VERSION-linux-$NODE_ARCH/bin/node"
+        "node-$NODE_VERSION-linux-$NODE_ARCH/bin/node" \
+        "node-$NODE_VERSION-linux-$NODE_ARCH/LICENSE"
 fi
 
-install -m 0755 "$TOOLS/node-$NODE_VERSION-$NODE_ARCH/node-$NODE_VERSION-linux-$NODE_ARCH/bin/node" "$APPDIR/usr/bin/node"
+install -m 0755 "$NODE_DIR/bin/node" "$APPDIR/usr/bin/node"
+install -m 0644 "$NODE_DIR/LICENSE" "$APPDIR/usr/share/doc/flyme-link-linux/NODE-LICENSE"
 install -m 0644 dist/flyme-link.cjs "$APPDIR/usr/lib/flyme-link/dist/flyme-link.cjs"
 install -m 0755 gui/flyme-qr-gui.py "$APPDIR/usr/lib/flyme-link/gui/flyme-qr-gui.py"
 install -m 0755 scripts/flyme-link-gui "$APPDIR/usr/bin/flyme-link-gui"
@@ -68,7 +74,7 @@ cp gnome-extension/extension.js gnome-extension/metadata.json \
 install -m 0644 desktop/flyme-link-qr.desktop "$APPDIR/usr/share/applications/"
 install -m 0644 assets/flyme-link-symbolic.svg \
     "$APPDIR/usr/share/icons/hicolor/scalable/apps/"
-install -m 0644 README.md LICENSE "$APPDIR/usr/share/doc/flyme-link-linux/"
+install -m 0644 README.md LICENSE docs/protocol.md "$APPDIR/usr/share/doc/flyme-link-linux/"
 if [ -f THIRD_PARTY_NOTICES.md ]; then
     install -m 0644 THIRD_PARTY_NOTICES.md "$APPDIR/usr/share/doc/flyme-link-linux/"
 fi

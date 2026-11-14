@@ -20,7 +20,7 @@ node scripts/build-bundle.js
 
 rm -rf "$STAGE"
 mkdir -p "$STAGE/dist" "$STAGE/gui" "$STAGE/gnome-extension" "$STAGE/assets" \
-    "$STAGE/desktop" "$STAGE/systemd" "$STAGE/scripts"
+    "$STAGE/desktop" "$STAGE/systemd" "$STAGE/scripts" "$STAGE/docs"
 
 install -m 0644 dist/flyme-link.cjs "$STAGE/dist/flyme-link.cjs"
 install -m 0755 gui/flyme-qr-gui.py "$STAGE/gui/flyme-qr-gui.py"
@@ -30,6 +30,7 @@ install -m 0644 desktop/flyme-link-qr.desktop "$STAGE/desktop/"
 install -m 0644 systemd/flyme-link.service "$STAGE/systemd/"
 install -m 0755 scripts/install.sh scripts/uninstall.sh scripts/flyme-link-gui "$STAGE/scripts/"
 install -m 0644 README.md LICENSE "$STAGE/"
+install -m 0644 docs/protocol.md "$STAGE/docs/"
 if [ -f THIRD_PARTY_NOTICES.md ]; then
     install -m 0644 THIRD_PARTY_NOTICES.md "$STAGE/"
 fi

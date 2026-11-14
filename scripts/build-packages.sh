@@ -58,7 +58,7 @@ mkdir -p \
     "$PKGROOT/usr/share/applications" \
     "$PKGROOT/usr/share/icons/hicolor/scalable/apps" \
     "$PKGROOT/usr/share/gnome-shell/extensions/flyme-link@local" \
-    "$PKGROOT/usr/share/doc/flyme-link-linux"
+    "$PKGROOT/usr/share/doc/flyme-link-linux/docs"
 
 install -m 0644 dist/flyme-link.cjs "$PKGROOT/usr/lib/flyme-link/dist/flyme-link.cjs"
 install -m 0755 gui/flyme-qr-gui.py "$PKGROOT/usr/lib/flyme-link/gui/flyme-qr-gui.py"
@@ -70,7 +70,7 @@ install -m 0644 systemd/flyme-link.service "$PKGROOT/usr/lib/systemd/user/flyme-
 install -m 0644 desktop/flyme-link-qr.desktop "$PKGROOT/usr/share/applications/flyme-link-qr.desktop"
 install -m 0644 assets/flyme-link-symbolic.svg \
     "$PKGROOT/usr/share/icons/hicolor/scalable/apps/flyme-link-symbolic.svg"
-install -m 0644 README.md LICENSE "$PKGROOT/usr/share/doc/flyme-link-linux/"
+install -m 0644 README.md LICENSE docs/protocol.md "$PKGROOT/usr/share/doc/flyme-link-linux/"
 if [ -f THIRD_PARTY_NOTICES.md ]; then
     install -m 0644 THIRD_PARTY_NOTICES.md "$PKGROOT/usr/share/doc/flyme-link-linux/"
 fi
