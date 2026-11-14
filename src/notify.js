@@ -1,25 +1,7 @@
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
 const { spawn } = require("child_process");
-
-/** Look up an executable in PATH without spawning a shell. */
-function findCommand(command, envPath = process.env.PATH || "") {
-  if (!command) return null;
-  if (command.includes(path.sep)) return fs.existsSync(command) ? command : null;
-  for (const dir of envPath.split(path.delimiter)) {
-    if (!dir) continue;
-    const candidate = path.join(dir, command);
-    try {
-      fs.accessSync(candidate, fs.constants.X_OK);
-      return candidate;
-    } catch {
-      // keep looking
-    }
-  }
-  return null;
-}
+const { findCommand } = require("./which.js");
 
 /**
  * Desktop notifications. On GNOME the Shell extension shows Main.notify()
