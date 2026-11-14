@@ -17,8 +17,7 @@ optdepends=(
 )
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
 
-# TODO: replace SKIP with the v1.0.1 tag archive sha256 after the release is published.
-sha256sums=('SKIP')
+sha256sums=('cdfcd3d363870193429c1ab68151ff5eec81d70fa3ebf69e70b0b97b50326525')
 
 build() {
     cd "$pkgname-$pkgver"
