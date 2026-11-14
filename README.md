@@ -48,27 +48,27 @@ yay -S flyme-link-linux
 ### Debian / Ubuntu
 
 ```bash
-sudo apt install ./flyme-link-linux_1.0.0_amd64.deb
+sudo apt install ./flyme-link-linux_1.0.1_amd64.deb
 ```
 
 ### Fedora / RHEL
 
 ```bash
-sudo dnf install ./flyme-link-linux-1.0.0-1.x86_64.rpm
+sudo dnf install ./flyme-link-linux-1.0.1-1.x86_64.rpm
 ```
 
 ### AppImage（内置 Node，免安装）
 
 ```bash
-chmod +x flyme-link-linux-1.0.0-x86_64.AppImage
-./flyme-link-linux-1.0.0-x86_64.AppImage
+chmod +x flyme-link-linux-1.0.1-x86_64.AppImage
+./flyme-link-linux-1.0.1-x86_64.AppImage
 ```
 
 ### 便携 tar.gz（需要系统 Node ≥ 18）
 
 ```bash
-tar xzf flyme-link-linux-1.0.0-linux-x86_64.tar.gz
-cd flyme-link-linux-1.0.0-linux-x86_64
+tar xzf flyme-link-linux-1.0.1-linux-x86_64.tar.gz
+cd flyme-link-linux-1.0.1-linux-x86_64
 ./scripts/install.sh
 ```
 

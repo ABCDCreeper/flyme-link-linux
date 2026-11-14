@@ -1,6 +1,6 @@
 {
   "name": "flyme-link-linux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Linux client for Meizu Flyme PC Link (Flyme 互联): cross-desktop clipboard sync over the Flyme protocol",
   "license": "MIT",
   "author": "flyme-link-linux contributors",
