@@ -1,0 +1,66 @@
+name: flyme-link-linux
+arch: ${ARCH}
+platform: linux
+version: ${VERSION}
+section: utils
+priority: optional
+maintainer: flyme-link-linux contributors <flyme-link@users.noreply.github.com>
+description: |
+  Linux client for Meizu Flyme PC Link (Flyme 互联) clipboard sync.
+  Works on GNOME, KDE Plasma, X11 and other Wayland compositors.
+vendor: flyme-link-linux
+homepage: https://github.com/flyme-link-linux/flyme-link-linux
+license: MIT
+
+contents:
+  - src: build/pkgroot/usr/bin/flyme-link
+    dst: /usr/bin/flyme-link
+    file_info:
+      mode: 0755
+  - src: build/pkgroot/usr/bin/flyme-link-gui
+    dst: /usr/bin/flyme-link-gui
+    file_info:
+      mode: 0755
+  - src: build/pkgroot/usr/lib/flyme-link
+    dst: /usr/lib/flyme-link
+    type: tree
+  - src: build/pkgroot/usr/share/applications/flyme-link-qr.desktop
+    dst: /usr/share/applications/flyme-link-qr.desktop
+  - src: build/pkgroot/usr/share/icons/hicolor/scalable/apps/flyme-link-symbolic.svg
+    dst: /usr/share/icons/hicolor/scalable/apps/flyme-link-symbolic.svg
+  - src: build/pkgroot/usr/lib/systemd/user/flyme-link.service
+    dst: /usr/lib/systemd/user/flyme-link.service
+  - src: build/pkgroot/usr/share/gnome-shell/extensions/flyme-link@local
+    dst: /usr/share/gnome-shell/extensions/flyme-link@local
+    type: tree
+  - src: build/pkgroot/usr/share/doc/flyme-link-linux
+    dst: /usr/share/doc/flyme-link-linux
+    type: tree
+
+overrides:
+  deb:
+    depends:
+      - nodejs
+      - wl-clipboard
+      - libnotify-bin
+    recommends:
+      - xclip
+      - python3-gi
+      - gir1.2-gtk-4.0
+      - gnome-shell-extension-appindicator
+    suggests:
+      - gnome-shell
+  rpm:
+    depends:
+      - nodejs >= 18
+      - wl-clipboard
+      - libnotify
+    recommends:
+      - xclip
+      - python3-gobject
+      - gtk4
+  archlinux:
+    depends:
+      - nodejs
+      - wl-clipboard
+      - libnotify
