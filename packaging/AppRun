@@ -1,5 +1,21 @@
 #!/bin/sh
+# AppImage entry point: make the tray/QR icon available to the host icon theme
+# (AppImages are not installed), then start the daemon.
 HERE=$(dirname "$(readlink -f "$0")")
 export APPDIR="$HERE"
 export PATH="$HERE/usr/bin:$PATH"
+
+ICON_SRC="$HERE/usr/share/icons/hicolor/scalable/apps/flyme-link-symbolic.svg"
+if [ -f "$ICON_SRC" ]; then
+    DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+    ICON_DIR="$DATA_HOME/icons/hicolor/scalable/apps"
+    mkdir -p "$ICON_DIR" 2>/dev/null || true
+    if [ -w "$ICON_DIR" ]; then
+        if ! cmp -s "$ICON_SRC" "$ICON_DIR/flyme-link-symbolic.svg" 2>/dev/null; then
+            cp "$ICON_SRC" "$ICON_DIR/flyme-link-symbolic.svg" 2>/dev/null || true
+            gtk-update-icon-cache -f -t "$DATA_HOME/icons/hicolor/" >/dev/null 2>&1 || true
+        fi
+    fi
+fi
+
 exec "$HERE/usr/bin/flyme-link" "$@"
