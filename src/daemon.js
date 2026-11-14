@@ -131,7 +131,8 @@ async function createDaemon(options = {}) {
       onClipboard: onLocalClipboard,
       hasExtension: () => Boolean(ipcServer && ipcServer.extensionCount() > 0),
     });
-    if (stopping) {
+    // The extension may have reconnected while detection was running.
+    if (stopping || (ipcServer && ipcServer.extensionCount() > 0)) {
       detected.stop();
       return;
     }
@@ -153,7 +154,7 @@ async function createDaemon(options = {}) {
   const startTray = async () => {
     if (stopping || tray || !trayEnabled) return;
     if (ipcServer && ipcServer.extensionCount() > 0) return;
-    tray = await trayFactory({
+    const created = await trayFactory({
       logger,
       handlers: {
         onShowQr: openGui,
@@ -161,6 +162,13 @@ async function createDaemon(options = {}) {
         onQuit: () => shutdown().then(() => process.exit(0)),
       },
     });
+    // Same race as the local backend: do not leave a tray icon behind if the
+    // extension connected while we were registering.
+    if (stopping || (ipcServer && ipcServer.extensionCount() > 0)) {
+      created?.stop();
+      return;
+    }
+    tray = created;
     tray?.update(state.value, state.detail);
   };
 
