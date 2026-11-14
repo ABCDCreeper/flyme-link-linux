@@ -15,6 +15,6 @@ pkgbase = flyme-link-linux
 	optdepends = gnome-shell: in-compositor clipboard sync via the bundled Shell extension
 	optdepends = gnome-shell-extension-appindicator: tray icon on GNOME if the extension is not used
 	source = flyme-link-linux-1.0.0.tar.gz::https://github.com/ABCDCreeper/flyme-link-linux/archive/refs/tags/v1.0.0.tar.gz
-	sha256sums = SKIP
+	sha256sums = e6f637073a32cc9e8cf6a07b7dfb6b65d232b5524b622180cf6f0bee645b98ed
 
 pkgname = flyme-link-linux

@@ -16,8 +16,8 @@ optdepends=(
     'gnome-shell-extension-appindicator: tray icon on GNOME if the extension is not used'
 )
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
-# TODO: replace SKIP with the sha256 of the GitHub tag archive once v1.0.0 is published.
-sha256sums=('SKIP')
+# sha256 of the GitHub v1.0.0 tag archive (stable across downloads).
+sha256sums=('e6f637073a32cc9e8cf6a07b7dfb6b65d232b5524b622180cf6f0bee645b98ed')
 
 build() {
     cd "$pkgname-$pkgver"
