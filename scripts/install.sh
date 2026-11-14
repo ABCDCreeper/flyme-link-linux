@@ -46,7 +46,7 @@ fi
 if [ "$SOURCE_MODE" = 1 ]; then
     if [ ! -d "$ROOT/node_modules" ]; then
         say "installing npm dependencies"
-        (cd "$ROOT" && npm install --omit=dev --no-audit --no-fund)
+        (cd "$ROOT" && npm install --omit=dev --ignore-scripts --no-audit --no-fund)
     fi
     say "installing live-source launchers into $BIN_DIR"
     mkdir -p "$BIN_DIR"
