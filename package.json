@@ -1,0 +1,50 @@
+{
+  "name": "flyme-link-linux",
+  "version": "1.0.0",
+  "description": "Linux client for Meizu Flyme PC Link (Flyme 互联): cross-desktop clipboard sync over the Flyme protocol",
+  "license": "MIT",
+  "author": "flyme-link-linux contributors",
+  "homepage": "https://github.com/flyme-link-linux/flyme-link-linux",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flyme-link-linux/flyme-link-linux.git"
+  },
+  "bugs": {
+    "url": "https://github.com/flyme-link-linux/flyme-link-linux/issues"
+  },
+  "bin": {
+    "flyme-link": "bin/flyme-link.js",
+    "flyme-link-gui": "gui/flyme-qr-gui.py"
+  },
+  "main": "src/daemon.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "flyme",
+    "meizu",
+    "clipboard",
+    "linux",
+    "gnome",
+    "kde",
+    "wayland",
+    "x11",
+    "reverse-engineering"
+  ],
+  "scripts": {
+    "start": "node bin/flyme-link.js",
+    "test": "node --test tests/unit/ tests/e2e/",
+    "test:unit": "node --test tests/unit/",
+    "test:e2e": "node --test tests/e2e/",
+    "build:bundle": "node scripts/build-bundle.js",
+    "build:packages": "bash scripts/build-packages.sh"
+  },
+  "dependencies": {
+    "dbus-next": "^0.10.2",
+    "qrcode": "^1.5.4",
+    "ws": "^8.18.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

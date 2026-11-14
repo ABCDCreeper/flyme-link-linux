@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+*.AppImage
+*.deb
+*.rpm
+*.pkg.tar.*
+*.tar.gz
+*.zip
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+*.log
