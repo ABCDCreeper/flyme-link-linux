@@ -15,6 +15,13 @@ function toAppVersion(version = VERSION) {
 const SIGNAL_SERVER =
   process.env.FLYME_SIGNAL_SERVER || "wss://socket.flyme.com/socket";
 
+/**
+ * Version advertised to the phone in the peerInfo handshake. The official PC
+ * client 1.0.10 sends 1000010 and is accepted by current Flyme phones, so we
+ * deliberately keep that wire value instead of our own package version.
+ * Override with FLYME_PEER_VERSION if a newer minimum is ever enforced.
+ */
+const APP_VERSION = Number(process.env.FLYME_PEER_VERSION || 1000010);
 const HEARTBEAT_MS = 10000;
 const HEARTBEAT_TIMEOUT_MS = 3000;
 const SESSION_RESTART_MS = 30000;
@@ -34,7 +41,7 @@ const QR_TIPS =
 
 module.exports = {
   VERSION,
-  APP_VERSION: toAppVersion(),
+  APP_VERSION,
   toAppVersion,
   SIGNAL_SERVER,
   HEARTBEAT_MS,
