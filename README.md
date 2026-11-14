@@ -38,11 +38,13 @@
 
 ## 安装
 
-### Arch Linux（AUR）
+### Arch Linux
 
 ```bash
-yay -S flyme-link-linux
-# 或使用仓库内 packaging/PKGBUILD 本地构建
+# 使用仓库内 PKGBUILD 本地构建（AUR 收录后也可 yay -S flyme-link-linux）
+git clone https://github.com/ABCDCreeper/flyme-link-linux.git
+cd flyme-link-linux/packaging
+makepkg -si
 ```
 
 ### Debian / Ubuntu
