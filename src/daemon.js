@@ -16,7 +16,9 @@ const { renderPng, renderTerminal } = require("./qr.js");
 const { createTray } = require("./tray/tray.js");
 const { findCommand } = require("./which.js");
 
-const EXTENSION_GRACE_MS = 1500;
+// Give the GNOME extension time to reconnect before falling back to external
+// clipboard watchers / the SNI tray (the extension retries every 3s).
+const EXTENSION_GRACE_MS = 4000;
 
 /**
  * The daemon ties everything together:
@@ -309,12 +311,14 @@ async function createDaemon(options = {}) {
     onRoleChange: (role) => {
       if (!role) {
         if (ipcServer && ipcServer.extensionCount() === 0) {
+          logger.log("GNOME extension disconnected; enabling local clipboard backend");
           startLocalBackend();
           startTray();
         }
         return;
       }
       if (role === ipc.ROLE.EXTENSION) {
+        logger.log("GNOME extension connected; using in-compositor clipboard");
         stopLocalBackend();
         stopTray();
       }
