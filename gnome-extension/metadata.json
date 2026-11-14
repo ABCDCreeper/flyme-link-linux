@@ -1,0 +1,10 @@
+{
+  "uuid": "flyme-link@local",
+  "name": "Flyme Link",
+  "description": "魅族 Flyme PC 互联剪贴板同步 — GNOME 优化路径 (组合器内监听剪贴板, 无外部轮询)",
+  "shell-version": ["45", "46", "47", "48", "49", "50", "51"],
+  "url": "https://github.com/flyme-link-linux/flyme-link-linux",
+  "session-modes": ["user"],
+  "version": 1,
+  "version-name": "1.0.0"
+}
