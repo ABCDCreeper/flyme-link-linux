@@ -1,12 +1,19 @@
 #!/bin/sh
-# Launcher for the GTK4 pairing window. Works both from a source checkout and
-# from the installed package layout (/usr/bin + /usr/lib/flyme-link).
+# Launcher for the GTK4 pairing window. Works from a source checkout, from the
+# installed package layout, and from the AppImage/portable tarball.
 set -eu
 
 SELF=$(readlink -f "$0" 2>/dev/null || printf '%s' "$0")
 DIR=$(dirname "$SELF")
 
-if [ -f "$DIR/../gui/flyme-qr-gui.py" ]; then
-    exec python3 "$DIR/../gui/flyme-qr-gui.py" "$@"
-fi
-exec python3 /usr/lib/flyme-link/gui/flyme-qr-gui.py "$@"
+for candidate in \
+    "$DIR/../gui/flyme-qr-gui.py" \
+    "$DIR/../lib/flyme-link/gui/flyme-qr-gui.py" \
+    "/usr/lib/flyme-link/gui/flyme-qr-gui.py"; do
+    if [ -f "$candidate" ]; then
+        exec python3 "$candidate" "$@"
+    fi
+done
+
+echo "flyme-link-gui: cannot locate flyme-qr-gui.py" >&2
+exit 1

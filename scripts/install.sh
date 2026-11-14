@@ -3,6 +3,9 @@
 #
 #   ./scripts/install.sh
 #
+# Works from a git checkout (npm install + live sources) and from the portable
+# tarball (bundled dist/flyme-link.cjs, no npm needed).
+#
 # Installs CLI launchers into ~/.local/bin, the tray/QR icon, a desktop entry,
 # a systemd user service, and — on GNOME — the bundled Shell extension.
 set -euo pipefail
@@ -19,9 +22,16 @@ DESKTOP_DIR="$DATA_DIR/applications"
 
 say() { printf '\033[1m==>\033[0m %s\n' "$*"; }
 
+SOURCE_MODE=1
+if [ -f "$ROOT/dist/flyme-link.cjs" ] && [ ! -f "$ROOT/package.json" ]; then
+    SOURCE_MODE=0
+fi
+
 say "checking dependencies"
 command -v node >/dev/null || { echo "node (>=18) is required" >&2; exit 1; }
-command -v npm >/dev/null || { echo "npm is required to install ws/qrcode/dbus-next" >&2; exit 1; }
+if [ "$SOURCE_MODE" = 1 ]; then
+    command -v npm >/dev/null || { echo "npm is required to install ws/qrcode/dbus-next" >&2; exit 1; }
+fi
 if command -v wl-copy >/dev/null; then
     :
 elif command -v xclip >/dev/null; then
@@ -33,16 +43,26 @@ if ! command -v notify-send >/dev/null; then
     echo "note: notify-send (libnotify) not found; tray/GUI still work but no desktop notifications" >&2
 fi
 
-if [ ! -d "$ROOT/node_modules" ]; then
-    say "installing npm dependencies"
-    (cd "$ROOT" && npm install --omit=dev --no-audit --no-fund)
+if [ "$SOURCE_MODE" = 1 ]; then
+    if [ ! -d "$ROOT/node_modules" ]; then
+        say "installing npm dependencies"
+        (cd "$ROOT" && npm install --omit=dev --no-audit --no-fund)
+    fi
+    say "installing live-source launchers into $BIN_DIR"
+    mkdir -p "$BIN_DIR"
+    ln -sf "$ROOT/bin/flyme-link.js" "$BIN_DIR/flyme-link"
+else
+    say "installing bundled launcher into $BIN_DIR"
+    mkdir -p "$BIN_DIR"
+    cat > "$BIN_DIR/flyme-link" <<EOF
+#!/bin/sh
+exec node "$ROOT/dist/flyme-link.cjs" "\$@"
+EOF
+    chmod 0755 "$BIN_DIR/flyme-link"
 fi
-
-say "installing launchers into $BIN_DIR"
-mkdir -p "$BIN_DIR"
-ln -sf "$ROOT/bin/flyme-link.js" "$BIN_DIR/flyme-link"
 ln -sf "$ROOT/scripts/flyme-link-gui" "$BIN_DIR/flyme-link-gui"
-chmod +x "$ROOT/bin/flyme-link.js" "$ROOT/scripts/flyme-link-gui"
+chmod +x "$ROOT/scripts/flyme-link-gui"
+[ -f "$ROOT/bin/flyme-link.js" ] && chmod +x "$ROOT/bin/flyme-link.js"
 
 say "installing icon and desktop entry"
 mkdir -p "$ICON_DIR" "$DESKTOP_DIR"
