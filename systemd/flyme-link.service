@@ -1,0 +1,16 @@
+[Unit]
+Description=Flyme 互联 (flyme-link-linux) clipboard sync
+Documentation=https://github.com/flyme-link-linux/flyme-link-linux
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/flyme-link --daemon
+Restart=on-failure
+RestartSec=3
+# Needed by the wl-copy fallback when the GNOME extension is not installed.
+Environment=WAYLAND_DISPLAY=wayland-0
+
+[Install]
+WantedBy=default.target
