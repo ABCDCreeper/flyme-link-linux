@@ -9,7 +9,7 @@ description: |
   Linux client for Meizu Flyme PC Link (Flyme 互联) clipboard sync.
   Works on GNOME, KDE Plasma, X11 and other Wayland compositors.
 vendor: flyme-link-linux
-homepage: https://github.com/flyme-link-linux/flyme-link-linux
+homepage: https://github.com/ABCDCreeper/flyme-link-linux
 license: MIT
 
 contents:

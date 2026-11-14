@@ -4,13 +4,13 @@
   "description": "Linux client for Meizu Flyme PC Link (Flyme 互联): cross-desktop clipboard sync over the Flyme protocol",
   "license": "MIT",
   "author": "flyme-link-linux contributors",
-  "homepage": "https://github.com/flyme-link-linux/flyme-link-linux",
+  "homepage": "https://github.com/ABCDCreeper/flyme-link-linux",
   "repository": {
     "type": "git",
-    "url": "https://github.com/flyme-link-linux/flyme-link-linux.git"
+    "url": "https://github.com/ABCDCreeper/flyme-link-linux.git"
   },
   "bugs": {
-    "url": "https://github.com/flyme-link-linux/flyme-link-linux/issues"
+    "url": "https://github.com/ABCDCreeper/flyme-link-linux/issues"
   },
   "bin": {
     "flyme-link": "bin/flyme-link.js",
