@@ -14,20 +14,34 @@ PKGROOT="$ROOT/build/pkgroot"
 DIST="$ROOT/dist"
 
 case "$ARCH" in
-amd64) NFPM_ASSET="nfpm_${NFPM_VERSION}_Linux_x86_64.tar.gz" ;;
-arm64) NFPM_ASSET="nfpm_${NFPM_VERSION}_Linux_arm64.tar.gz" ;;
+amd64|arm64) ;;
 *) echo "unsupported ARCH: $ARCH (use amd64 or arm64)" >&2; exit 1 ;;
+esac
+
+# nfpm is only a packager: use the binary matching the BUILD HOST so arm64
+# packages can be produced on x86_64 runners (and vice versa).
+HOST_ARCH=$(uname -m)
+case "$HOST_ARCH" in
+x86_64) NFPM_ASSET="nfpm_${NFPM_VERSION}_Linux_x86_64.tar.gz" ;;
+aarch64|arm64)
+    HOST_ARCH=aarch64
+    NFPM_ASSET="nfpm_${NFPM_VERSION}_Linux_arm64.tar.gz"
+    ;;
+*)
+    echo "unsupported build host: $HOST_ARCH" >&2
+    exit 1
+    ;;
 esac
 
 say() { printf '\033[1m==>\033[0m %s\n' "$*"; }
 
 ensure_nfpm() {
-    local nfpm="$TOOLS/nfpm-$NFPM_VERSION/nfpm"
+    local nfpm="$TOOLS/nfpm-$NFPM_VERSION-$HOST_ARCH/nfpm"
     if [ -x "$nfpm" ]; then
         printf '%s\n' "$nfpm"
         return
     fi
-    mkdir -p "$TOOLS/nfpm-$NFPM_VERSION"
+    mkdir -p "$TOOLS/nfpm-$NFPM_VERSION-$HOST_ARCH"
     say "downloading nfpm $NFPM_VERSION" >&2
     curl -fsSL -o "$TOOLS/$NFPM_ASSET" \
         "https://github.com/goreleaser/nfpm/releases/download/v$NFPM_VERSION/$NFPM_ASSET"
@@ -40,7 +54,7 @@ ensure_nfpm() {
         echo "nfpm checksum verification failed" >&2
         exit 1
     fi
-    tar xzf "$TOOLS/$NFPM_ASSET" -C "$TOOLS/nfpm-$NFPM_VERSION" nfpm
+    tar xzf "$TOOLS/$NFPM_ASSET" -C "$TOOLS/nfpm-$NFPM_VERSION-$HOST_ARCH" nfpm
     printf '%s\n' "$nfpm"
 }
 
