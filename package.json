@@ -33,9 +33,9 @@
   ],
   "scripts": {
     "start": "node bin/flyme-link.js",
-    "test": "node --test tests/unit/ tests/e2e/",
-    "test:unit": "node --test tests/unit/",
-    "test:e2e": "node --test tests/e2e/",
+    "test": "node --test tests/unit/*.test.js tests/e2e/*.test.js",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:e2e": "node --test tests/e2e/*.test.js",
     "build:bundle": "node scripts/build-bundle.js",
     "build:packages": "bash scripts/build-packages.sh"
   },
