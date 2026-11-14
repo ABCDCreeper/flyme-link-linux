@@ -14,7 +14,7 @@
   },
   "bin": {
     "flyme-link": "bin/flyme-link.js",
-    "flyme-link-gui": "gui/flyme-qr-gui.py"
+    "flyme-link-gui": "scripts/flyme-link-gui"
   },
   "main": "src/daemon.js",
   "engines": {

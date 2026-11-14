@@ -1,0 +1,12 @@
+#!/bin/sh
+# Launcher for the GTK4 pairing window. Works both from a source checkout and
+# from the installed package layout (/usr/bin + /usr/lib/flyme-link).
+set -eu
+
+SELF=$(readlink -f "$0" 2>/dev/null || printf '%s' "$0")
+DIR=$(dirname "$SELF")
+
+if [ -f "$DIR/../gui/flyme-qr-gui.py" ]; then
+    exec python3 "$DIR/../gui/flyme-qr-gui.py" "$@"
+fi
+exec python3 /usr/lib/flyme-link/gui/flyme-qr-gui.py "$@"

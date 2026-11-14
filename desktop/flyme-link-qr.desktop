@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Flyme 互联（二维码）
+Name[en]=Flyme Link (QR pairing)
+Comment=魅族 Flyme PC 互联扫码配对与连接状态
+Comment[en]=Pair with Meizu Flyme PC Link and show the connection state
+Exec=flyme-link-gui
+Icon=flyme-link-symbolic
+Terminal=false
+Categories=Utility;Network;
+Keywords=Flyme;Meizu;clipboard;互联;剪贴板;
